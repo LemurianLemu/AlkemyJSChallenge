@@ -1,17 +1,17 @@
 
 .d-flex input{
 
-    margin: .9em 0em;
+    margin: 0.9em 0em;
 }
 
-.d-flex button{
+.container button{
 
     margin: 1.5em .6em;
-    padding: .3em  2.4em;
+    padding: .3em  3.4em;
 }
 
 .subtitleOutcome{
-    color: red;
+    color: rgb(168, 164, 164);
 }
 
 .subtitleIncome{
