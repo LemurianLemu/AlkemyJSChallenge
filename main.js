@@ -1,10 +1,10 @@
-
 let alCargar = ()=>{
     incomeTotal()
     outcomeTotal()
     //sumExpenses()
     //restExpenses()
     setTimeout(totalExpenses,60)
+    
     
 }
 
@@ -72,6 +72,8 @@ const btnread = document.getElementById('btn-read');
 const btnedit = document.getElementById('btn-edit');
 const btndeleteall = document.getElementById('btn-delete-all');
 
+
+
 //insert button inputs
 btncreate.onclick = (event)=>    {
 
@@ -86,6 +88,9 @@ btncreate.onclick = (event)=>    {
         getData(db.incomes,(data)=>{
             expenseId.value = data.id +1 || 1;
         });
+        let insertmsg = document.querySelector('.insertmsg')
+
+        getMsg(flag, insertmsg)
     }else if(type.value==='2'){
         let flag = bulkcreate(db.outcomes,{
             concept: concept.value,
@@ -96,9 +101,14 @@ btncreate.onclick = (event)=>    {
         concept.value = amount.value = date.value = ""
         getData(db.outcomes,(data)=>{
             expenseId.value = data.id +1 || 1;
-        });
+        })
+        let insertmsg = document.querySelector('.insertmsg')
+
+        getMsg(flag, insertmsg);
     }else{console.log('ERROR, SPECIFY VALUE TYPE')}
     table()
+
+    
     
 }
 
@@ -177,8 +187,11 @@ btnedit.onclick=()=>{               //THIS TAKES THE DATA FROM THE FORM AND UPDA
                 amount: amount.value,
                 date: date.value
             }).then((updated)=>{
-                let get = updated?`Data Incomes UPDATED..!!`: `Couldn't Update DATA`
-                console.log(get);
+                //let get = updated?`Data Incomes UPDATED..!!`: `Couldn't Update DATA`
+                get=updated?true:false;
+                let updatemsg = document.querySelector('.updatemsg')
+                getMsg(get, updatemsg)
+                
             })
 
         }
@@ -189,8 +202,10 @@ btnedit.onclick=()=>{               //THIS TAKES THE DATA FROM THE FORM AND UPDA
                 amount: amount.value,
                 date: date.value
             }).then((updated)=>{
-                let get = updated?`Data Outcomes UPDATED..!!`: `Couldn't Update DATA`
-                console.log(get);
+                //let get = updated?`Data Outcomes UPDATED..!!`: `Couldn't Update DATA`
+                get=updated?true:false;
+                let updatemsg = document.querySelector('.updatemsg')
+                getMsg(get, updatemsg)
             })
 
         }
@@ -356,6 +371,9 @@ function table(){       // FUNCTION TO CREATE HTML ELEMENTS DINAMYCLY
                 })
             }
         })
+    }else if(document.getElementById(tbody.textContent=null)){
+        console.log('ASDASD')
+        notfound.textContent = 'No record found in the DB...!'
     }
     
 }
@@ -488,6 +506,24 @@ btndeleteall.onclick = ()=>{    //WIPE ALL DB AND CREATE IT AGAIN
         incomes: `++id, concept, amount, date`,
         outcomes: `++id, concept, amount, date` 
     })
+    db.open();
     table();
     
+    let deletemsg = document.querySelector('.deletemsg')
+    getMsg(true, deletemsg)
+    
+}
+
+function getMsg(flag, element){
+
+    if(flag){
+        element.className+=" movedown";
+
+        setTimeout(()=>{
+            element.classList.forEach(classname => {
+                classname == 'movedown'?undefined:element.classList.remove("movedown")
+            }); 
+
+        },4000);
+    }
 }
